@@ -1,2 +1,5 @@
-config.json
+
 TODO.txt
+
+package/__pycache__/
+*.pyc
