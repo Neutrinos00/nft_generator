@@ -10,6 +10,8 @@ class AssetsGenerator:
     def __init__(self, datapath: str) -> None:
         self.datapath = datapath
 
+        self.dna_list = []
+
     def generateAssets(self) -> list:
         asset_types = []
         for foldname in sorted(os.listdir(self.datapath)):
