@@ -95,14 +95,27 @@ class NFTGenerator:
             if self.debug:
                 asset_type_name = assetType["name"]
                 print(
-                    f"{index}: base={choosenBase.name}: basefilter={choosenBase.filter}: assettype={asset_type_name}: asset={choosenAsset.name}: assetfilter={choosenAsset.filter}"
+                    f"{index}: base={choosenBase.name}: \
+                        basefilter={choosenBase.filter}: \
+                        assettype={asset_type_name}: \
+                        asset={choosenAsset.name}: \
+                        assetfilter={choosenAsset.filter}"
                 )
         return assetList
 
     def _DNA_check(self, asset_list: list) -> bool:
-        pass
+        ID_list = [asset.ID for asset in asset_list]
+        if self.debug:
+            print(ID_list)
+
+        if ID_list not in self._DNA_list:
+            self._DNA_list.append(ID_list)
+            return True
+        else:
+            return False
 
     def _mergeAssetsAndSaveNFTFile(self, asset_list: list, index: int) -> None:
+
         def old_version(images: list) -> Image:
             bg = images[0]
             for _img in images[1:]:
@@ -118,7 +131,6 @@ class NFTGenerator:
             return Image.fromarray(bg)
 
         images = [Image.open(asset.filepath) for asset in asset_list]
-        #bg = old_version(images)
         bg = blend(images)
 
         self._saveFinalImage(bg, index)

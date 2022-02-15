@@ -50,16 +50,16 @@ def main() -> None:
         # print(assetTypes)
         print(assetTypes[2]["filters"][0]["assets"][0].ID)
 
-        # print("\nData : ok\n")
-        # print("NFT generation : \n")
-        # NFTGenerator(
-        #     assetTypes=assetTypes,
-        #     outputPath=config["OUTPUT_PATH"],
-        #     N_NFT=N_NFT,
-        #     filters=config["FILTERS"],
-        #     display=config["DISPLAY"],
-        #     debug=False,
-        # ).build()
+        print("\nData : ok\n")
+        print("NFT generation : \n")
+        NFTGenerator(
+            assetTypes=assetTypes,
+            outputPath=config["OUTPUT_PATH"],
+            N_NFT=N_NFT,
+            filters=config["FILTERS"],
+            display=config["DISPLAY"],
+            debug=True,
+        ).build()
 
 
 if __name__ == '__main__':
