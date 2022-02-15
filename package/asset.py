@@ -5,15 +5,13 @@ import re
 
 
 class Asset:
-    """ Basic asset define by : 
-
-    """
 
     def __init__(
         self,
         filepath: str,
         assetType: str,
         filter: str = None,
+        ID: int = None,
     ) -> None:
 
         self.filepath = filepath
@@ -22,3 +20,4 @@ class Asset:
         self.name = os.path.basename(filepath).split("-")[0]
         self.probability = int(re.findall(
             r'\d+', os.path.basename(filepath))[0])
+        self.ID = ID

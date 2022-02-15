@@ -16,6 +16,7 @@ from package.asset import Asset
 
 
 class NFTGenerator:
+    """ Generator of NFT """
 
     def __init__(
         self,
@@ -34,14 +35,19 @@ class NFTGenerator:
         self.display = display
         self.debug = debug
 
+        self._DNA_list = []
+
     def build(self) -> None:
         for i in range(self.N_NFT):
             self._generateSingleNFT(i)
 
     def _generateSingleNFT(self, index: int) -> None:
         asset_list = self._buildSingleAssetList(index)
-        self._mergeAssetsAndSaveNFTFile(asset_list, index)
-        self._saveMetaData(asset_list, index)
+        if self._DNA_check(asset_list):
+            self._mergeAssetsAndSaveNFTFile(asset_list, index)
+            self._saveMetaData(asset_list, index)
+        else:
+            self._generateSingleNFT(index)
 
     def _buildSingleAssetList(self, index: int) -> list:
         # definition of a weighted random choice
@@ -92,6 +98,9 @@ class NFTGenerator:
                     f"{index}: base={choosenBase.name}: basefilter={choosenBase.filter}: assettype={asset_type_name}: asset={choosenAsset.name}: assetfilter={choosenAsset.filter}"
                 )
         return assetList
+
+    def _DNA_check(self, asset_list: list) -> bool:
+        pass
 
     def _mergeAssetsAndSaveNFTFile(self, asset_list: list, index: int) -> None:
         def old_version(images: list) -> Image:
