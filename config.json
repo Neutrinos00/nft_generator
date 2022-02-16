@@ -1,6 +1,6 @@
 {
-    "INPUT_PATH": "C:/Users/lucas/Desktop/END_project/Generator/test_data/hunter",
-    "OUTPUT_PATH": "C:/Users/lucas/Desktop/END_project/Generator/test_data/outputs",
+    "INPUT_PATH": "C:/path/to/inputs",
+    "OUTPUT_PATH": "C:/path/to/outputs",
     "DISPLAY": false,
-    "FILTERS": ["Skull", "Skull_Short_Hair"]
+    "FILTERS": []
 }
