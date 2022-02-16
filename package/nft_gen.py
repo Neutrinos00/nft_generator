@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from functools import reduce
-from operator import mul
+""" Please see licence for personnal use """
+
 import os
-import json
 import random
 import re
-from datetime import datetime
 
 from PIL import Image
 import numpy as np
 import blend_modes
 
 from package.asset import Asset
+from package.metadata_gen import MetaDataGenerator
 
 
 class NFTGenerator:
@@ -36,6 +35,7 @@ class NFTGenerator:
         self.debug = debug
 
         self._DNA_list = []
+        self._metadata_Generator = MetaDataGenerator(outputPath)
 
     def build(self) -> None:
         for i in range(self.N_NFT):
@@ -130,10 +130,10 @@ class NFTGenerator:
             bg = np.uint8(bg)
             return Image.fromarray(bg)
 
-        images = [Image.open(asset.filepath) for asset in asset_list]
-        bg = blend(images)
-
-        self._saveFinalImage(bg, index)
+        if not self.debug:
+            images = [Image.open(asset.filepath) for asset in asset_list]
+            bg = blend(images)
+            self._saveFinalImage(bg, index)
 
     def _saveFinalImage(self, image: Image, index: int) -> None:
         def save() -> None:
@@ -155,31 +155,8 @@ class NFTGenerator:
                 save()
 
     def _saveMetaData(self, asset_list: list, index: int) -> None:
-        # attributes are relatated of choosen asset in each asset_type
-        attributes = [
-            {asset.assetType: [asset.name]} for asset in asset_list
-        ]
-        # rarity is definied by the product of all proba of choosen asset in each asset_type
-        rarity = reduce(mul,  [asset.probability /
-                        100 for asset in asset_list])
-        # definition of meta data
-        data = {
-            "name": str(index),
-            "description": "CAT",
-            "image": str(index) + ".png",
-            "edition": 5,
-            "date": str(datetime.now()),
-            "attributes": attributes,
-            "rarity": rarity,
-            "filter": asset_list[0].filter,
-        }
-
-        if not self.debug:
-            try:
-                # save of meta data
-                savepath = os.path.join(self.outputPath, str(index) + ".json")
-                with open(savepath, 'w') as outfile:
-                    json.dump(data, outfile)
-                print(f"meta save in {savepath}")
-            except:
-                print("Error saving metadata")
+        self._metadata_Generator.generate(
+            asset_list,
+            index,
+            debug=self.debug,
+        )

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+""" Please see licence for personnal use """
+
 import os
 
 from package.asset import Asset
