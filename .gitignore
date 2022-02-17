@@ -3,3 +3,4 @@ TODO.txt
 
 package/__pycache__/
 *.pyc
+test.py

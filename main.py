@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import json
-
-from package.assets_gen import AssetsGenerator
 from package.nft_gen import NFTGenerator
+from package.assets_gen import AssetsGenerator
+import json
+import warnings
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
 def getConfig() -> dict:
@@ -16,6 +17,7 @@ def getConfig() -> dict:
         try:
             inputpath = config["INPUT_PATH"]
             outputs = config["OUTPUT_PATH"]
+            CIP = config["CIP"]
             filters = config["FILTERS"]
             display = config["DISPLAY"]
         except:
@@ -25,6 +27,7 @@ def getConfig() -> dict:
 
         print(f"  input_data_path = {inputpath}")
         print(f"  outputs_path = {outputs}")
+        print(f"  CIP = {CIP}")
         print(f"  filters = {filters}")
         print(f"  display mode = {display}")
 
@@ -47,18 +50,16 @@ def main() -> None:
         print("\nData generation & check\n")
         assetTypes = AssetsGenerator(path).generateAssets()
 
-        # print(assetTypes)
-        print(assetTypes[2]["filters"][0]["assets"][0].ID)
-
         print("\nData : ok\n")
         print("NFT generation : \n")
         NFTGenerator(
             assetTypes=assetTypes,
             outputPath=config["OUTPUT_PATH"],
             N_NFT=N_NFT,
+            CIP=config["CIP"],
             filters=config["FILTERS"],
             display=config["DISPLAY"],
-            debug=True,
+            debug=False,
         ).build()
 
 

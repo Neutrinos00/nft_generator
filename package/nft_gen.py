@@ -9,6 +9,7 @@ import re
 from PIL import Image
 import numpy as np
 import blend_modes
+from tqdm import tqdm
 
 from package.asset import Asset
 from package.metadata_gen import MetaDataGenerator
@@ -22,6 +23,7 @@ class NFTGenerator:
         assetTypes: list,
         outputPath: str,
         N_NFT: int,
+        CIP: bool = False,
         filters: list = True,
         display: bool = False,
         debug: bool = False,
@@ -35,10 +37,15 @@ class NFTGenerator:
         self.debug = debug
 
         self._DNA_list = []
-        self._metadata_Generator = MetaDataGenerator(outputPath)
+
+        self._metadata_Generator = MetaDataGenerator(
+            outputPath,
+            CIP,
+            os.path.basename(outputPath),
+        )
 
     def build(self) -> None:
-        for i in range(self.N_NFT):
+        for i in tqdm(range(self.N_NFT)):
             self._generateSingleNFT(i)
 
     def _generateSingleNFT(self, index: int) -> None:
@@ -63,7 +70,6 @@ class NFTGenerator:
             for filter in self.filters:
                 filt = re.findall(r'[a-zA-Z]+', filter)
                 base_name = re.findall(r'[a-zA-Z]+', choosenBase.name)
-                print(filt, base_name)
                 if filt == base_name:
                     choosenBase.filter = filter
 
@@ -138,7 +144,7 @@ class NFTGenerator:
     def _saveFinalImage(self, image: Image, index: int) -> None:
         def save() -> None:
             image.save(savepath)
-            print(f"img save in {savepath}")
+            #print(f"img save in {savepath}")
             if self.display:
                 image.show(str(index))
                 return
